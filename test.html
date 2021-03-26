@@ -23,7 +23,7 @@
           </button>
       </div>
       <button class="ui button" , id="graveStone">
-        BuyGraveStone: Cost 50 , + 1 jujuSouls/sec 
+        BuyGraveStone: Cost 50 , + 1 jujuSouls/sec
       </button>
         <script>
 
@@ -84,10 +84,43 @@
            {
              this.basicSoulsCount++;
            }
+           class Event
+           { constructor(name_,description_,cost_,gain_,altcost_,altgain_,costType_,gainType_,altcostType_,altgainType_)
+             {
+
+               this.name=name_;
+               this.description=description_;
+               this.cost=cost_;
+               this.gain=gain_;
+               this.altcost=altcost_;
+               this.altgain=altgain_;
+               this.costType=costType_;
+               this.gainType=gainType_;
+               this.altcostType=altcostType_;
+               this.altgainType=altgainType_;
+             }
+
+             Decision(bool_)
+             {
+               if(bool_==true)
+               {
+                   player[this.costType]-=this.cost;
+                   player[this.gainType]+=this.gain;
+               }
+               else {
+                 player[this.altcostType]-=this.altcost;
+                 player[this.altgainType]+=this.altgain;
+
+               }
+             }
+
+           }
 
         }
 
 let mySoulHolder= new SoulHolder();
+let GraveStone=new Upgrade("gravestone", 50, 1, "jujuSouls", "basicSouls");
+
 
 
 
@@ -102,7 +135,10 @@ mySoulHolder.AddBasic();
 
       window.requestAnimationFrame(frame);
   }
+  function Purchase(name_)
+  {
 
+  }
   frame();
 
 
