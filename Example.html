@@ -18,68 +18,191 @@
     </script>
 
     <div>
-      <p id="Count">0</p>
+      <p id="Steel">0</p>
+      <p id="Wood">0</p>
+      <p id="Food">0</p>
     </div>
-    <div class="ui two buttons">
-        <button class="ui primary button", id="Increase">
-            Increase
+    <div class="ui three buttons">
+        <button class="ui button", id="SteelButton">
+            Steel
           </button>
-          <button class="ui button">
-            Discard
+          <button class="ui button", id="WoodButton">
+            Wood
+          </button>
+          <button class="ui button", id="FoodButton">
+            Food
           </button>
     </div>
 
     <script>
 
-      function Player()
+      class SoulHolder
       {
-          this.currencies = {};
+          constructor() 
+          { 
+              this.currencies = {}; 
 
-          this.AddCurrency = function(Key)
+              this.UpdateCurrency("Steel", 20);
+              this.UpdateCurrency("Wood", 20);
+              this.UpdateCurrency("Food", 30);
+
+              this.rates = {};
+          }
+
+          HasCurrency(Key)
+          {
+              return Key in this.currencies;
+          }
+
+          HasRate(Key)
+          {
+              return Key in this.rates;
+          }
+
+          AddCurrency(Key)
           {
               this.currencies[Key] = 0;
           };
 
-          this.UpdateCurrency = function(Key, Value)
+          UpdateCurrency(Key, Value)
           {
+              if (!this.HasCurrency(Key))
+              {
+                  this.currencies[Key] = 0;
+              }
+
               this.currencies[Key] += Value;
           };
+
+          UpdateRate(Key, Rate)
+          {
+              if (!this.HasRate(Key))
+              {
+                  this.rates[Key] = 0;
+              }
+
+              this.rates[Key] += Rate;
+          }
+
+          Buy(Key, Building)
+          {
+              this.UpdateRate(Key, Building.GetRate());
+              this.UpdateCurrency(Building.GetCurrency(), -Building.GetCost());
+          }
+
+          Update()
+          {
+              for (const[key, value] of Object.entries(this.rates))
+              {
+                  this.UpdateCurrency(key, value);
+              }
+          }
       }
 
-      function Counter()
+      class Builder
       {
-          this.count = 0;
-          this.add = 1;
-
-          this.AddCount = function()
+          constructor(Name, Cost, Rate, Currency)
           {
-            this.count += this.add;
-          };
+              this.cost = Cost;
+              this.name = Name;
+              this.rate = Rate;
+              this.currency = Currency;
+          }
 
-          this.GetCount = function()
+          CanBuy(SoulHolder)
           {
-            return this.count;
-          };
+              if (SoulHolder.currencies[this.currency] > this.cost)
+                return true;
+          }
 
-          this.IncreaseAdder = function()
+          Buy()
           {
-              this.add++;
-          };
+              this.cost = this.cost * 1.5;
+          }
+
+          GetCost() 
+          {
+              return this.cost;
+          }
+
+          GetCurrency()
+          {
+              return this.currency;
+          }
+
+          GetRate()
+          {
+              return this.rate;
+          }
       }
 
-      let player = new Player();
-      player.AddCurrency("Steel");
+      class BuildingRegistry
+      {
+          constructor()
+          {
+              this.buildings = {};
 
-      document.getElementById("Increase").addEventListener("click", function()
+              var steel = new Builder("Steel", 5, 0.01, "Steel");
+              this.buildings["Steel"] = steel;
+
+              var steel = new Builder("Wood", 5, 0.01, "Wood");
+              this.buildings["Wood"] = steel;
+
+              var steel = new Builder("Food", 5, 0.01, "Food");
+              this.buildings["Food"] = steel;
+          }
+
+          AddBuilding(Building)
+          {
+              this.buildings[Building.name] = Building;
+          }
+
+          Buy(Key, SoulHolder)
+          {
+              if (this.buildings[Key].CanBuy(SoulHolder))
+              {
+                  SoulHolder.Buy(Key, this.buildings[Key]);
+                  this.buildings[Key].Buy();
+              }
+          }
+      }
+
+      let registry = new BuildingRegistry();
+      let player = new SoulHolder();
+
+      document.getElementById("SteelButton").addEventListener("click", function()
       { 
-          var key = Object.keys(player.currencies)[0];
-          player.UpdateCurrency(key, 1);
+          registry.Buy("Steel", player);
       });
+
+      document.getElementById("WoodButton").addEventListener("click", function()
+      { 
+          registry.Buy("Wood", player);
+      });
+
+      document.getElementById("FoodButton").addEventListener("click", function()
+      { 
+          registry.Buy("Food", player);
+      });
+
+      function display(Player)
+      {
+          var key = "Steel";
+          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]); 
+
+          key = "Wood";
+          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]); 
+
+          key = "Food";
+          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]); 
+      }
 
       function frame()
       {
-          var key = Object.keys(player.currencies)[0];
-          document.getElementById("Count").innerHTML = key + " " + player.currencies[key]; 
+
+          player.Update();
+
+          display(player);
 
           window.requestAnimationFrame(frame);
       }
