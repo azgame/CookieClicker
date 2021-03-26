@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" type="text/css" href="SemanticUI/dist/semantic.min.css">
+    <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="SemanticUI/dist/semantic.min.js"></script>
+
+<html>
+<head>
+	<title>UI Example</title>
+</head>
+<body>
+
+    <script>
+      var count = 0;
+    </script>
+
+    <div>
+      <p id="Count">0</p>
+    </div>
+    <div class="ui two buttons">
+        <button class="ui primary button", id="Increase">
+            Increase
+          </button>
+          <button class="ui button">
+            Discard
+          </button>
+    </div>
+
+    <script>
+
+      function Player()
+      {
+          this.currencies = {};
+
+          this.AddCurrency = function(Key)
+          {
+              this.currencies[Key] = 0;
+          };
+
+          this.UpdateCurrency = function(Key, Value)
+          {
+              this.currencies[Key] += Value;
+          };
+      }
+
+      function Counter()
+      {
+          this.count = 0;
+          this.add = 1;
+
+          this.AddCount = function()
+          {
+            this.count += this.add;
+          };
+
+          this.GetCount = function()
+          {
+            return this.count;
+          };
+
+          this.IncreaseAdder = function()
+          {
+              this.add++;
+          };
+      }
+
+      let player = new Player();
+      player.AddCurrency("Steel");
+
+      document.getElementById("Increase").addEventListener("click", function()
+      { 
+          var key = Object.keys(player.currencies)[0];
+          player.UpdateCurrency(key, 1);
+      });
+
+      function frame()
+      {
+          var key = Object.keys(player.currencies)[0];
+          document.getElementById("Count").innerHTML = key + " " + player.currencies[key]; 
+
+          window.requestAnimationFrame(frame);
+      }
+
+      frame();
+
+    </script>
+</body>
+</html>
