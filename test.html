@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" type="text/css" href="SemanticUI/dist/semantic.min.css">
+    <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="SemanticUI/dist/semantic.min.js"></script>
+
+
+<html>
+<head>
+	<title>UI Example</title>
+</head>
+<body>
+  <p id="whatever">hello</p>
+    <div class="ui two buttons">
+        <button class="ui primary button", id="basicClick">
+            Click
+          </button>
+          <button class="ui button">
+            Discard
+          </button>
+      </div>
+      <button class="ui button" , id="graveStone">
+        BuyGraveStone: Cost 50 , + 1 jujuSouls/sec 
+      </button>
+        <script>
+
+        class Upgrade {
+           constructor (name_, cost_, rate_, type_, costType_) {
+                this.name = name_;
+                this.cost = cost_;
+                this.rate = rate_;
+                this.type = type_;
+                this.costType = costType_;
+            }
+             UpgradeSelf()
+            {
+                this.cost = this.cost * 1.5;
+            }
+         GetCost()
+            {
+                return this.cost;
+            }
+         GetType()
+        {
+            return this.type;
+        }
+
+        }
+
+        class SoulHolder
+        {
+            constructor()
+            {
+                  this. basicSoulsCount=5;
+                  this. jujuSoulsCount=0;
+                  this. diegoSoulsCount=0;
+                  this. bingoSoulsCount=0;
+                  this. soleSoulsCount=0;
+                  this. superSoulsCount=0;
+                  this. superDeDuperSoulsCount=0;
+                  this. basicSoulsIncome=0;
+                  this. jujuSoulsIncome=0;
+                  this. diegoSoulsIncome=0;
+                  this. bingoSoulsIncome=0;
+                  this. soleSoulsIncome=0;
+                  this. superSoulsIncome=0;
+                  this. superDeDuperSoulsIncome=0;
+            }
+            GainSouls()
+            {
+                 this.basicSoulsCount+=   this.basicSoulsIncome;
+                 this.jujuSoulsCount+=   this.jujuSoulsIncome;
+                this. diegoSoulsCount+=   this.diegoSoulsIncome;
+                 this.bingoSoulsCount+=   this.bingoSoulsIncome;
+                this.soleSoulsCount+=  this.soleSoulsIncome;
+                 this.superSoulsCount+=   this.superSoulsIncome;
+                 this.superDeDuperSoulsCount+=   this.superDeDuperSoulsIncome;
+
+            }
+           AddBasic()
+           {
+             this.basicSoulsCount++;
+           }
+
+        }
+
+let mySoulHolder= new SoulHolder();
+
+
+
+mySoulHolder.AddBasic();
+ document.getElementById("basicClick").addEventListener("click", function(){mySoulHolder.AddBasic();});
+  //document.getElementById("Save").addEventListener("click", function(){alert("Saved!")});
+
+  function frame()
+  {
+
+    document.getElementById("whatever").innerHTML =mySoulHolder.basicSoulsCount;
+
+      window.requestAnimationFrame(frame);
+  }
+
+  frame();
+
+
+
+        </script>
+
+
+
+
+</body>
+</html>
