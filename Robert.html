@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" type="text/css" href="SemanticUI/dist/semantic.min.css">
+    <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="SemanticUI/dist/semantic.min.js"></script>
+
+<html>
+<head>
+	<title>UI Example</title>
+</head>
+<body>
+
+    <script>
+      var count = 0;
+    </script>
+
+    <div>
+      <p id="basic">0</p>
+      <p id="juju">0</p>
+      <p id="diego">0</p>
+      <p id="bingo">0</p>
+      <p id="sole">0</p>
+    </div>
+    <button class="ui button", id="basicButton">
+      Mash
+    </button>
+    <div class="ui three buttons">
+        <button class="ui button", id="graveStoneButton">
+            GraveStoneB
+          </button>
+          <button class="ui button", id="graveYardButton">
+            GraveYardB
+          </button>
+          <button class="ui button", id="CemetaryButton">
+            CemetaryB
+          </button>
+    </div>
+
+
+    <script>
+
+      class SoulHolder
+      {
+          constructor()
+          {
+              this.currencies = {};
+
+              this.UpdateCurrency("basic", 20);
+              this.UpdateCurrency("juju", 20);
+              this.UpdateCurrency("diego", 30);
+
+              this.rates = {};
+          }
+
+          HasCurrency(Key)
+          {
+              return Key in this.currencies;
+          }
+
+          HasRate(Key)
+          {
+              return Key in this.rates;
+          }
+
+          AddCurrency(Key)
+          {
+              this.currencies[Key] = 0;
+          };
+
+          UpdateCurrency(Key, Value)
+          {
+              if (!this.HasCurrency(Key))
+              {
+                  this.currencies[Key] = 0;
+              }
+
+              this.currencies[Key] += Value;
+          };
+
+          UpdateRate(Key, Rate)
+          {
+              if (!this.HasRate(Key))
+              {
+                  this.rates[Key] = 0;
+              }
+
+              this.rates[Key] += Rate;
+          }
+
+          Buy(Key, Building)
+          {
+              this.UpdateRate(Key, Building.GetRate());
+              this.UpdateCurrency(Building.GetCurrency(), -Building.GetCost());
+          }
+
+          Update()
+          {
+              for (const[key, value] of Object.entries(this.rates))
+              {
+                  this.UpdateCurrency(key, value);
+              }
+          }
+      }
+
+      class Builder
+      {
+          constructor(Name, Cost, Rate, CurrencyToBuy, CurrencyGain)
+          {
+              this.cost = Cost;
+              this.name = Name;
+              this.rate = Rate;
+              this.currencytobuy = CurrencyToBuy;
+              this.currencygain = CurrencyGain;
+          }
+
+          CanBuy(SoulHolder)
+          {
+              if (SoulHolder.currencies[this.currencytobuy] > this.cost)
+                return true;
+          }
+
+          Buy()
+          {
+              this.cost = this.cost * 1.5;
+          }
+
+          GetCost()
+          {
+              return this.cost;
+          }
+
+          GetCurrency()
+          {
+              return this.currencytobuy;
+          }
+
+          GetRate()
+          {
+              return this.rate;
+          }
+      }
+
+      class BuildingRegistry
+      {
+          constructor()
+          {
+              this.buildings = {};
+
+              var graveStone = new Builder("graveStone", 5, 1,"basic" , "juju");
+              this.buildings["graveStone"] = graveStone;
+
+              var GraveYard = new Builder("GraveYard", 20, 5,"juju", "diego");
+              this.buildings["GraveYard"] = GraveYard;
+
+              var Cemetary = new Builder("Cemetary", 50, 15, "diego", "sole");
+              this.buildings["Cemetary"] = Cemetary;
+          }
+
+          AddBuilding(Building)
+          {
+              this.buildings[Building.name] = Building;
+          }
+
+          Buy(Key, SoulHolder)
+          {
+              if (this.buildings[Key].CanBuy(SoulHolder))
+              {
+                  SoulHolder.Buy(Key, this.buildings[Key]);
+                  this.buildings[Key].Buy();
+              }
+          }
+      }
+
+      let registry = new BuildingRegistry();
+      let player = new SoulHolder();
+
+      document.getElementById("graveStoneButton").addEventListener("click", function()
+      {
+          registry.Buy("graveStone", player);
+
+      });
+
+      document.getElementById("graveYardButton").addEventListener("click", function()
+      {
+          registry.Buy("GraveYard", player);
+      });
+
+      document.getElementById("CemetaryButton").addEventListener("click", function()
+      {
+          registry.Buy("Cemetary", player);
+      });
+
+      function display(Player)
+      {
+          var key = "basic";
+          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+
+          key = "juju";
+          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+
+          key = "diego";
+          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+      }
+
+      function frame()
+      {
+
+          player.Update();
+
+          display(player);
+
+          window.requestAnimationFrame(frame);
+      }
+
+      frame();
+
+    </script>
+</body>
+</html>
