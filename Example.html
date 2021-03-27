@@ -6,16 +6,14 @@
     integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
     crossorigin="anonymous"></script>
     <script src="SemanticUI/dist/semantic.min.js"></script>
+    <script src="SemanticUI/src/definitions/behaviors/api.js"></script>
+    <script src="SemanticUI/src/definitions/modules/popup.js"></script>
 
 <html>
 <head>
 	<title>UI Example</title>
 </head>
 <body>
-
-    <script>
-      var count = 0;
-    </script>
 
     <div>
       <p id="Steel">0</p>
@@ -32,9 +30,24 @@
           <button class="ui button", id="FoodButton">
             Food
           </button>
+          
+    </div>
+
+    <div class="ui button", id="PopupButton">Show event</div>
+        <div class="ui popup top left transition hidden">
+            <h4 class="ui header">Event!</h4>
+            <p><b>2</b> DiegoSouls</p>
+            <div class="ui button">Buy</div>
     </div>
 
     <script>
+
+    $(document.getElementById("PopupButton"))
+        .popup({
+            on : "hover",
+            hoverable : true
+        })
+    ;
 
       class SoulHolder
       {
@@ -84,10 +97,10 @@
               this.rates[Key] += Rate;
           }
 
-          Buy(Key, Building)
+          Buy(Building)
           {
-              this.UpdateRate(Key, Building.GetRate());
-              this.UpdateCurrency(Building.GetCurrency(), -Building.GetCost());
+              this.UpdateRate(Building.GetCurrencyGet(), Building.GetRate());
+              this.UpdateCurrency(Building.GetCurrencyBuy(), -Building.GetCost());
           }
 
           Update()
@@ -101,17 +114,23 @@
 
       class Builder
       {
-          constructor(Name, Cost, Rate, Currency)
+          constructor(Name, CurrencyCost, Cost, CurrencyGet, Rate)
           {
-              this.cost = Cost;
-              this.name = Name;
-              this.rate = Rate;
-              this.currency = Currency;
+            this.name = Name;
+            this.currencyCost = CurrencyCost;
+            this.cost = Cost;
+            this.currencyGet = CurrencyGet;
+            this.rate = Rate;
+          }
+
+          GetName()
+          {
+              return this.name;
           }
 
           CanBuy(SoulHolder)
           {
-              if (SoulHolder.currencies[this.currency] > this.cost)
+              if (SoulHolder.currencies[this.currencyCost] > this.cost)
                 return true;
           }
 
@@ -125,9 +144,14 @@
               return this.cost;
           }
 
-          GetCurrency()
+          GetCurrencyBuy()
           {
-              return this.currency;
+              return this.currencyCost;
+          }
+
+          GetCurrencyGet()
+          {
+              return this.currencyGet;
           }
 
           GetRate()
@@ -142,26 +166,26 @@
           {
               this.buildings = {};
 
-              var steel = new Builder("Steel", 5, 0.01, "Steel");
-              this.buildings["Steel"] = steel;
+              var steel = new Builder("SteelBuilding", "Wood", 5, "Steel", 0.01);
+              this.AddBuilding(steel);
 
-              var steel = new Builder("Wood", 5, 0.01, "Wood");
-              this.buildings["Wood"] = steel;
+              var wood = new Builder("WoodBuilding", "Food", 5, "Wood", 0.01);
+              this.AddBuilding(wood);
 
-              var steel = new Builder("Food", 5, 0.01, "Food");
-              this.buildings["Food"] = steel;
+              var food = new Builder("FoodBuilding", "Steel", 5, "Food", 0.01);
+              this.AddBuilding(food);
           }
 
           AddBuilding(Building)
           {
-              this.buildings[Building.name] = Building;
+              this.buildings[Building.GetName()] = Building;
           }
 
           Buy(Key, SoulHolder)
           {
               if (this.buildings[Key].CanBuy(SoulHolder))
               {
-                  SoulHolder.Buy(Key, this.buildings[Key]);
+                  SoulHolder.Buy(this.buildings[Key]);
                   this.buildings[Key].Buy();
               }
           }
@@ -172,18 +196,20 @@
 
       document.getElementById("SteelButton").addEventListener("click", function()
       { 
-          registry.Buy("Steel", player);
+          registry.Buy("SteelBuilding", player);
       });
 
       document.getElementById("WoodButton").addEventListener("click", function()
       { 
-          registry.Buy("Wood", player);
+          registry.Buy("WoodBuilding", player);
       });
 
       document.getElementById("FoodButton").addEventListener("click", function()
       { 
-          registry.Buy("Food", player);
+          registry.Buy("FoodBuilding", player);
       });
+
+      
 
       function display(Player)
       {
