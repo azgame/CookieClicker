@@ -200,21 +200,21 @@
           {
               this.buildings = {};
 
-              var ghostHelper = new Builder("ghostHelperBuilding", "basic", 5, "basic", 1);
+              var ghostHelper = new Builder("ghostHelperBuilding", "basic", 50, "basic", 0.03);
               this.AddBuilding(ghostHelper);
-              var graveStone = new Builder("graveStoneBuilding", "basic", 5, "juju", 1);
+              var graveStone = new Builder("graveStoneBuilding", "basic", 50, "juju", 0.03);
               this.AddBuilding(graveStone);
 
-              var graveYard = new Builder("graveYardBuilding", "juju", 5, "diego", 1);
+              var graveYard = new Builder("graveYardBuilding", "juju", 200, "diego", 0.15);
               this.AddBuilding(graveYard);
 
-              var cemetary = new Builder("cemetaryBuilding", "diego", 5, "bingo", 1);
+              var cemetary = new Builder("cemetaryBuilding", "diego", 500, "bingo", 0.45);
               this.AddBuilding(cemetary);
-              var battlefield = new Builder("battlefieldBuilding", "bingo", 5, "sole", 1);
+              var battlefield = new Builder("battlefieldBuilding", "bingo", 1500, "sole", 1.5);
               this.AddBuilding(battlefield);
-              var ghoulapalooza = new Builder("ghoulapaloozaBuilding", "sole", 5, "super", 1);
+              var ghoulapalooza = new Builder("ghoulapaloozaBuilding", "sole", 5000, "super", 5.4);
               this.AddBuilding(ghoulapalooza);
-              var skeletonboneanza = new Builder("skeletonboneanzaBuilding", "super", 5, "superDeDuper", 1);
+              var skeletonboneanza = new Builder("skeletonboneanzaBuilding", "super", 10000, "superDeDuper", 9);
               this.AddBuilding(skeletonboneanza);
           }
 
@@ -295,25 +295,25 @@
       function display(Player)
       {
           var key = "basic";
-          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+          document.getElementById(key).innerHTML = key + " Souls " + Math.floor(Player.currencies[key]);
 
           key = "juju";
-          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+          document.getElementById(key).innerHTML = key + " Souls " + Math.floor(Player.currencies[key]);
 
           key = "diego";
-          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+          document.getElementById(key).innerHTML = key + " Souls " + Math.floor(Player.currencies[key]);
 
           key = "bingo";
-          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+          document.getElementById(key).innerHTML = key + " Souls " + Math.floor(Player.currencies[key]);
 
           key = "sole";
-          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+          document.getElementById(key).innerHTML = key + " Souls " + Math.floor(Player.currencies[key]);
 
           key = "super";
-          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+          document.getElementById(key).innerHTML = key + " Souls " + Math.floor(Player.currencies[key]);
 
           key = "superDeDuper";
-          document.getElementById(key).innerHTML = key + " " + Math.floor(Player.currencies[key]);
+          document.getElementById(key).innerHTML = key + " Souls " + Math.floor(Player.currencies[key]);
       }
 
       function frame()
