@@ -8,7 +8,7 @@
     <script src="SemanticUI/dist/semantic.min.js"></script>
     <script src="SemanticUI/src/definitions/behaviors/api.js"></script>
     <script src="SemanticUI/src/definitions/modules/popup.js"></script>
-    
+
 <html>
 <head>
 	<title>Darkest Souls Collector</title>
@@ -73,7 +73,7 @@
               </button>
         </div>
     </div>
-    
+
     <div style="width:500px; margin:0 auto;", class="ui raised container segment">
         <div style="width:200px; margin:0 auto;">
             <button class="ui left attached primary button", id="mashButton">
@@ -89,7 +89,7 @@
                     <button class="ui button", id="PassEventButton">Pass</button>
                 </div>
             </div>
-        </div>      
+        </div>
     </div>
 
     <script src="Clicker.js"></script>
@@ -127,7 +127,7 @@
             document.getElementById("ghoulaPaloozaButton").innerHTML = "Ghoula-Palooza Cost: " + setTwoNumberDecimal(Registry.GetBuilding("ghoulapaloozaBuilding").GetCost());
             document.getElementById("superRate").innerHTML = "SuS/s: " + setTwoNumberDecimal(Player.GetRate("super"));
 
-            document.getElementById("skeletonBoneanzaButton").innerHTML = "Ghoula-Palooza Cost: " + setTwoNumberDecimal(Registry.GetBuilding("skeletonboneanzaBuilding").GetCost());
+            document.getElementById("skeletonBoneanzaButton").innerHTML = "Skeleton Boneanza Cost: " + setTwoNumberDecimal(Registry.GetBuilding("skeletonboneanzaBuilding").GetCost());
             document.getElementById("superDeDuperRate").innerHTML = "SDDS/s: " + setTwoNumberDecimal(Player.GetRate("superDeDuper"));
         }
 
@@ -180,13 +180,13 @@
         {
             registry.Buy(randomKey, player);
             randomKey = registry.GetRandomBuilding();
-            document.getElementById("EventText").innerHTML = "Buy " + randomKey; 
+            document.getElementById("EventText").innerHTML = "Buy " + randomKey;
             UpdateBuildingDisplays(registry, player);
         });
         document.getElementById("PassEventButton").addEventListener("click", function()
         {
             randomKey = registry.GetRandomBuilding();
-            document.getElementById("EventText").innerHTML = "Buy " + randomKey; 
+            document.getElementById("EventText").innerHTML = "Buy " + randomKey;
         });
 
         function UpdatePlayerDisplays(Player)
