@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" type="text/css" href="SemanticUI/dist/semantic.min.css">
+    <script
+    src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    crossorigin="anonymous"></script>
+    <script src="SemanticUI/dist/semantic.min.js"></script>
+    <script src="SemanticUI/src/definitions/behaviors/api.js"></script>
+    <script src="SemanticUI/src/definitions/modules/popup.js"></script>
+    
+<html>
+<head>
+	<title>Darkest Souls Collector</title>
+</head>
+<body>
+
+    <div class="ui horizontal segments">
+        <div class="ui segment">
+            <h1 style="text-align: center", id="basic">Basic Souls</p>
+                <p style="text-align: center", id="basicCount">Count: 0</p>
+                <p style="text-align: center", id="basicRate">Rate: 0</p>
+            <button class="ui button", id="ghostHelperButton">
+                GhostHelper Cost: 50
+            </button>
+        </div>
+        <div class="ui segment">
+            <h1 style="text-align: center", id="juju">Juju Souls</p>
+            <p style="text-align: center", id="jujuCount">Count: 0</p>
+            <p style="text-align: center", id="jujuRate">Rate: 0</p>
+            <button class="ui button", id="graveStoneButton">
+                GraveStone Cost: 50
+              </button>
+        </div>
+        <div class="ui segment">
+            <h1 style="text-align: center", id="diego">Diego Souls</p>
+                <p style="text-align: center", id="diegoCount">Count: 0</p>
+                <p style="text-align: center", id="diegoRate">Rate: 0</p>
+            <button class="ui button", id="graveyardButton">
+                Graveyard Cost: 200
+              </button>
+        </div>
+        <div class="ui segment">
+            <h1 style="text-align: center", id="bingo">Bingo Souls</p>
+                <p style="text-align: center", id="bingoCount">Count: 0</p>
+                <p style="text-align: center", id="bingoRate">Rate: 0</p>
+            <button class="ui button", id="cemetaryButton">
+                Cemetary Cost: 500
+              </button>
+        </div>
+        <div class="ui segment">
+            <h1 style="text-align: center", id="sole">Sole Souls</p>
+                <p style="text-align: center", id="soleCount">Count: 0</p>
+                <p style="text-align: center", id="soleRate">Rate: 0</p>
+            <button class="ui button", id="battlefieldButton">
+                Battlefield Cost: 1500
+              </button>
+        </div>
+        <div class="ui segment">
+            <h1 style="text-align: center", id="super">Super Souls</p>
+                <p style="text-align: center", id="superCount">Count: 0</p>
+                <p style="text-align: center", id="superRate">Rate: 0</p>
+            <button class="ui button", id="ghoulaPaloozaButton">
+                Ghoula-palooza Cost: 5000
+              </button>
+        </div>
+        <div class="ui segment">
+            <h1 style="text-align: center", id="superDeDuper">SuperDeDuper Souls</p>
+                <p style="text-align: center", id="superDeDuperCount">Count: 0</p>
+                <p style="text-align: center", id="superDeDuperRate">Rate: 0</p>
+            <button class="ui button", id="skeletonBoneanzaButton">
+                Skeleton-Boneanza Cost: 10000
+              </button>
+        </div>
+    </div>
+    
+    <div style="width:500px; margin:0 auto;", class="ui raised container segment">
+        <div style="width:200px; margin:0 auto;">
+            <button class="ui left attached primary button", id="mashButton">
+                Mash
+            </button>
+            <div class="right attached ui button", id="PopupButton">Show event</div>
+            <div class="ui popup top left transition hidden">
+                <h4 class="ui header">Event!</h4>
+                <p id="EventText">ghostHelperBuilding</p>
+                <div class="ui large buttons">
+                    <button class="ui button", id="BuyEventButton">Buy</button>
+                    <div class="or"></div>
+                    <button class="ui button", id="PassEventButton">Pass</button>
+                </div>
+            </div>
+        </div>      
+    </div>
+
+    <script src="Clicker.js"></script>
+
+    <script>
+
+        $(document.getElementById("PopupButton"))
+            .popup({
+                on : "hover",
+                hoverable : true
+            })
+        ;
+
+        function setTwoNumberDecimal(value) {
+            return parseFloat(value).toFixed(2);
+        }
+
+        function UpdateBuildingDisplays(Registry, Player)
+        {
+            document.getElementById("ghostHelperButton").innerHTML = "Ghosthelper Cost: " + setTwoNumberDecimal(Registry.GetBuilding("ghostHelperBuilding").GetCost());
+            document.getElementById("basicRate").innerHTML = "BaS/s: " + setTwoNumberDecimal(Player.GetRate("basic"));
+
+            document.getElementById("graveStoneButton").innerHTML = "GraveStone Cost: " + setTwoNumberDecimal(Registry.GetBuilding("graveStoneBuilding").GetCost());
+            document.getElementById("jujuRate").innerHTML = "JS/s: " + setTwoNumberDecimal(Player.GetRate("juju"));
+
+            document.getElementById("graveyardButton").innerHTML = "Graveyard Cost: " + setTwoNumberDecimal(Registry.GetBuilding("graveYardBuilding").GetCost());
+            document.getElementById("diegoRate").innerHTML = "DS/s: " + setTwoNumberDecimal(Player.GetRate("diego"));
+
+            document.getElementById("cemetaryButton").innerHTML = "Cemetary Cost: " + setTwoNumberDecimal(Registry.GetBuilding("cemetaryBuilding").GetCost());
+            document.getElementById("bingoRate").innerHTML = "BS/s: " + setTwoNumberDecimal(Player.GetRate("bingo"));
+
+            document.getElementById("battlefieldButton").innerHTML = "Battlefield Cost: " + setTwoNumberDecimal(Registry.GetBuilding("battlefieldBuilding").GetCost());
+            document.getElementById("soleRate").innerHTML = "SS/s: " + setTwoNumberDecimal(Player.GetRate("sole"));
+
+            document.getElementById("ghoulaPaloozaButton").innerHTML = "Ghoula-Palooza Cost: " + setTwoNumberDecimal(Registry.GetBuilding("ghoulapaloozaBuilding").GetCost());
+            document.getElementById("superRate").innerHTML = "SuS/s: " + setTwoNumberDecimal(Player.GetRate("super"));
+
+            document.getElementById("skeletonBoneanzaButton").innerHTML = "Ghoula-Palooza Cost: " + setTwoNumberDecimal(Registry.GetBuilding("skeletonboneanzaBuilding").GetCost());
+            document.getElementById("superDeDuperRate").innerHTML = "SDDS/s: " + setTwoNumberDecimal(Player.GetRate("superDeDuper"));
+        }
+
+        let registry = new BuildingRegistry();
+        let player = new SoulHolder();
+        var randomKey = "ghostHelperBuilding";
+
+        document.getElementById("ghostHelperButton").addEventListener("click", function()
+        {
+            registry.Buy("ghostHelperBuilding", player);
+            UpdateBuildingDisplays(registry, player);
+        });
+        document.getElementById("graveStoneButton").addEventListener("click", function()
+        {
+            registry.Buy("graveStoneBuilding", player);
+            UpdateBuildingDisplays(registry, player);
+        });
+
+        document.getElementById("graveyardButton").addEventListener("click", function()
+        {
+            registry.Buy("graveYardBuilding", player);
+            UpdateBuildingDisplays(registry, player);
+        });
+
+        document.getElementById("cemetaryButton").addEventListener("click", function()
+        {
+            registry.Buy("cemetaryBuilding", player);
+            UpdateBuildingDisplays(registry, player);
+        });
+        document.getElementById("battlefieldButton").addEventListener("click", function()
+        {
+            registry.Buy("battlefieldBuilding", player);
+            UpdateBuildingDisplays(registry, player);
+        });
+        document.getElementById("ghoulaPaloozaButton").addEventListener("click", function()
+        {
+            registry.Buy("ghoulapaloozaBuilding", player);
+            UpdateBuildingDisplays(registry, player);
+        });
+        document.getElementById("skeletonBoneanzaButton").addEventListener("click", function()
+        {
+            registry.Buy("skeletonboneanzaBuilding", player);
+            UpdateBuildingDisplays(registry, player);
+        });
+        document.getElementById("mashButton").addEventListener("click", function()
+        {
+            player.UpdateCurrency("basic", 2);
+        });
+        document.getElementById("BuyEventButton").addEventListener("click", function()
+        {
+            registry.Buy(randomKey, player);
+            randomKey = registry.GetRandomBuilding();
+            document.getElementById("EventText").innerHTML = "Buy " + randomKey; 
+            UpdateBuildingDisplays(registry, player);
+        });
+        document.getElementById("PassEventButton").addEventListener("click", function()
+        {
+            randomKey = registry.GetRandomBuilding();
+            document.getElementById("EventText").innerHTML = "Buy " + randomKey; 
+        });
+
+        function UpdatePlayerDisplays(Player)
+        {
+            var key = "basic";
+            document.getElementById(key+"Count").innerHTML = Math.floor(Player.currencies[key]);
+
+            key = "juju";
+            document.getElementById(key+"Count").innerHTML = Math.floor(Player.currencies[key]);
+
+            key = "diego";
+            document.getElementById(key+"Count").innerHTML = Math.floor(Player.currencies[key]);
+
+            key = "bingo";
+            document.getElementById(key+"Count").innerHTML = Math.floor(Player.currencies[key]);
+
+            key = "sole";
+            document.getElementById(key+"Count").innerHTML = Math.floor(Player.currencies[key]);
+
+            key = "super";
+            document.getElementById(key+"Count").innerHTML = Math.floor(Player.currencies[key]);
+
+            key = "superDeDuper";
+            document.getElementById(key+"Count").innerHTML = Math.floor(Player.currencies[key]);
+        }
+
+        function frame()
+        {
+            player.Update();
+
+            UpdatePlayerDisplays(player);
+
+            window.requestAnimationFrame(frame);
+        }
+
+        UpdateBuildingDisplays(registry, player);
+        frame();
+
+    </script>
+</body>
+</html>
